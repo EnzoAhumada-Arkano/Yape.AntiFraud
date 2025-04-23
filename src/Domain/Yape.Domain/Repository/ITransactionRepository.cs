@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Repository
 {
-    public interface ITransactionRepository : IRepositoryBase
+    public interface ITransactionRepository : IBaseRepository<Transaction>
     {
         // Define any additional methods specific to the Transaction repository here
         Task<IEnumerable<Transaction>> GetTransactionsByAccountIdAsync(Guid accountId);

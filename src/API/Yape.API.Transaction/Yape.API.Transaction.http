@@ -1,0 +1,27 @@
+@Yape.Transaction.API_HostAddress = http://localhost:5132
+
+### Get all transactions
+GET {{Yape.Transaction.API_HostAddress}}/api/Transactions
+Accept: application/json
+
+###
+
+### Get a transaction by ID
+GET {{Yape.Transaction.API_HostAddress}}/api/Transactions/{{transactionId}}
+Accept: application/json
+
+###
+
+### Create a new transaction
+POST {{Yape.Transaction.API_HostAddress}}/api/Transactions
+Content-Type: application/json
+
+{
+  "sourceAccountId": "00000000-0000-0000-0000-000000000001",
+  "destinationAccountId": "00000000-0000-0000-0000-000000000002",
+  "transferTypeId": 1,
+  "value": 100
+}
+
+###
+

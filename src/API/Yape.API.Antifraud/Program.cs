@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Application.Handlers;
-using MediatR;
+using Yape.Antifraud.API.Configurations;
 using Yape.Infrastructure.Postgresql.Database;
-using Yape.Transaction.API.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 

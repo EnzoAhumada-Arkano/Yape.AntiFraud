@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Repository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,11 @@ namespace Yape.Infrastructure.Postgresql.Repository
         public Task<IEnumerable<Transaction>> GetTransactionsByDateRangeAsync(DateTime startDate, DateTime endDate)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Transaction> GetTransactionsByExternalIdAsync(Guid externalId)
+        {
+            return await _dbContext.Transactions.Where(x => x.TransactionExternalId == externalId).FirstOrDefaultAsync(); 
         }
 
         public Task<IEnumerable<Transaction>> GetTransactionsByTransferTypeIdAsync(int transferTypeId)

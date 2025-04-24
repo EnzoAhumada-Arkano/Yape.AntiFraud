@@ -13,5 +13,6 @@ namespace Domain.Repository
         Task<IEnumerable<Transaction>> GetTransactionsByAccountIdAsync(Guid accountId);
         Task<IEnumerable<Transaction>> GetTransactionsByTransferTypeIdAsync(int transferTypeId);
         Task<IEnumerable<Transaction>> GetTransactionsByDateRangeAsync(DateTime startDate, DateTime endDate);
+        Task<Transaction> GetTransactionsByExternalIdAsync(Guid externalId);
     }
 }

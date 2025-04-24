@@ -16,12 +16,13 @@ namespace Yape.Infrastructure.Postgresql.Repository
         {
             _dbContext = dbContext;
         }
-        public Task AddAsync<TEntity>(TEntity entity) where TEntity : class
+
+        public Task AddAsync(TEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync<TEntity>(int id) where TEntity : class
+        public Task DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
@@ -31,14 +32,14 @@ namespace Yape.Infrastructure.Postgresql.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TEntity>> GetAllAsync<TEntity>() where TEntity : class
+        public Task<IEnumerable<TEntity>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<TEntity> GetByIdAsync<TEntity>(int id) where TEntity : class
+        public Task<TEntity> GetByIdAsync(int id)
         {
-            return await _dbContext.Set<TEntity>().FindAsync(id);
+            throw new NotImplementedException();
         }
 
         public Task SaveChangesAsync()
@@ -46,7 +47,7 @@ namespace Yape.Infrastructure.Postgresql.Repository
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync<TEntity>(TEntity entity) where TEntity : class
+        public Task UpdateAsync(TEntity entity)
         {
             throw new NotImplementedException();
         }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Queries
 {
-    public class GetTransactionByIdQuery : IRequest<Transaction>
+    public class GetTransactionByExternalIdQuery : IRequest<Transaction>
     {
         public Guid TransactionExternalId { get; set; }
     }

@@ -8,12 +8,39 @@ namespace Domain.Repository
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {
-        /// Define the methods that all repositories should implement
-        Task AddAsync<TEntity>(TEntity entity) where TEntity : class;
-        Task<TEntity> GetByIdAsync<TEntity>(int id) where TEntity : class;
-        Task<IEnumerable<TEntity>> GetAllAsync<TEntity>() where TEntity : class;
-        Task UpdateAsync<TEntity>(TEntity entity) where TEntity : class;
-        Task DeleteAsync<TEntity>(int id) where TEntity : class;
+        /// <summary>
+        /// Add a new entity to the database.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task AddAsync(TEntity entity);
+        /// <summary>
+        /// Get an entity by its ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<TEntity> GetByIdAsync(int id);
+        /// <summary>
+        /// GET all entities from the database.
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        /// <summary>
+        /// Update an existing entity in the database.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task UpdateAsync(TEntity entity);
+        /// <summary>
+        /// Delete an entity from the database.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task DeleteAsync(int id);
+        /// <summary>
+        /// Save changes to the database.
+        /// </summary>
+        /// <returns></returns>
         Task SaveChangesAsync();
     }
 }

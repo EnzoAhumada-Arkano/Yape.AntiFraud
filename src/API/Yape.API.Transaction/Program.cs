@@ -1,5 +1,7 @@
+using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 using Yape.Infrastructure.Postgresql.Database;
+using Yape.Infrastructure.Postgresql.Repository;
 using Yape.Transaction.API.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 // Add services to the container.
+builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
 MediatRConfiguration.ConfigureMediatRService(builder.Services);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();

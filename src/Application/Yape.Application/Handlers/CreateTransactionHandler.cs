@@ -1,6 +1,7 @@
 ﻿using Application.Commands;
-
+using Domain.Repository;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Yape.Infrastructure.Postgresql.Database;
 
 
@@ -8,11 +9,13 @@ namespace Application.Handlers
 {
     public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand, Guid>
     {
-        private readonly AppDbContext _dbContext;
+        private readonly ILogger<CreateTransactionHandler> _logger;
+        private readonly ITransactionRepository _transactionRepository;
 
-        public CreateTransactionHandler(AppDbContext dbContext)
+        public CreateTransactionHandler(ILogger<CreateTransactionHandler> logger, ITransactionRepository transactionRepository)
         {
-            _dbContext = dbContext;
+            _logger = logger;
+            _transactionRepository = transactionRepository;
         }
 
         public async Task<Guid> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
@@ -22,6 +25,8 @@ namespace Application.Handlers
             {
                 throw new ArgumentNullException(nameof(request));
             }
+
+
             // Map command to entity
             var transaction = new Domain.Entities.Transaction
             {
@@ -31,8 +36,8 @@ namespace Application.Handlers
                 Value = request.Value,
             };
             // Save to database
-            _dbContext.Transactions.Add(transaction);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _transactionRepository.AddAsync(transaction);
+            await _transactionRepository.SaveChangesAsync();
             return transaction.TransactionExternalId;
         }
     }

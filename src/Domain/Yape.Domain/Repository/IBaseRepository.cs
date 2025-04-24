@@ -30,7 +30,7 @@ namespace Domain.Repository
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task UpdateAsync(TEntity entity);
+        Task<bool> UpdateAsync(TEntity entity);
         /// <summary>
         /// Delete an entity from the database.
         /// </summary>
@@ -42,5 +42,10 @@ namespace Domain.Repository
         /// </summary>
         /// <returns></returns>
         Task SaveChangesAsync();
+        /// <summary>
+        /// Count the number of entities in the database.
+        /// </summary>
+        /// <returns></returns>
+        Task<int> CountAsync();
     }
 }

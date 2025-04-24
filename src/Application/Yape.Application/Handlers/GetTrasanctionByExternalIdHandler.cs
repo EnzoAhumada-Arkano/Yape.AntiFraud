@@ -24,18 +24,27 @@ namespace Application.Handlers
             _logger.LogInformation("GetTrasanctionByExternalIdHandler:Handle - Logic");
             var transaction = await _transactionRepository.GetTransactionsByExternalIdAsync(request.TransactionExternalId);
 
-            // Map the transaction infrastructure model to the domain model
-            var transactionDomain = new Transaction
+            if (transaction != null)
             {
-                TransactionExternalId = transaction.TransactionExternalId,
-                CreatedAt = transaction.CreatedAt,
-                SourceAccountId = transaction.SourceAccountId,
-                TargetAccountId = transaction.TargetAccountId,
-                TransferTypeId = transaction.TransferTypeId,
-                Value = transaction.Value
-            };
+                // Map the transaction infrastructure model to the domain model
+                var transactionDomain = new Transaction
+                {
+                    TransactionExternalId = transaction.TransactionExternalId,
+                    CreatedAt = transaction.CreatedAt,
+                    SourceAccountId = transaction.SourceAccountId,
+                    TargetAccountId = transaction.TargetAccountId,
+                    TransferTypeId = transaction.TransferTypeId,
+                    Value = transaction.Value
+                };
 
-            return transactionDomain;
+                return transactionDomain;
+            }
+            else
+            {
+                return null;
+            }
+
+            
         }
     }
 }

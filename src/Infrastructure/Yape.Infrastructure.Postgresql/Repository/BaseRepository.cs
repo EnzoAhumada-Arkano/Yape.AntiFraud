@@ -1,4 +1,7 @@
 ﻿using Domain.Repository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,46 +13,83 @@ namespace Yape.Infrastructure.Postgresql.Repository
 {
     public class BaseRepository<TEntity> : IDisposable, IBaseRepository<TEntity> where TEntity : class
     {
+        private readonly ILogger<BaseRepository<TEntity>> _logger;
         private readonly AppDbContext _dbContext;
 
-        public BaseRepository(AppDbContext dbContext)
+        public BaseRepository(ILogger<BaseRepository<TEntity>> logger, AppDbContext dbContext)
         {
+            _logger = logger;
             _dbContext = dbContext;
         }
 
-        public Task AddAsync(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _dbContext.Set<TEntity>().AddAsync(entity);
+                await SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _logger.LogError(ex, "AddAsync - Error occurred while adding entity.");
+            }
         }
 
-        public Task DeleteAsync(int id)
+        public async Task<int> CountAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Set<TEntity>().CountAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entity = await GetByIdAsync(id);
+            if (entity != null)
+            {
+                _dbContext.Set<TEntity>().Remove(entity);
+                await SaveChangesAsync();
+            }
+            else
+            {
+                _logger.LogWarning($"DeleteAsync - Entity with ID {id} not found.");
+            }
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _dbContext?.Dispose();
         }
 
-        public Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
-        public Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public Task SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task UpdateAsync(TEntity entity)
+        public async Task<bool> UpdateAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            bool isUpdated = false;
+            try
+            {
+                _dbContext.Entry(entity).State = EntityState.Modified;
+                await SaveChangesAsync();
+                isUpdated = true;
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                isUpdated = false;
+                _logger.LogError(ex, "UpdateAsync - Error occurred while updating entity.");
+            }
+
+            return isUpdated;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace Yape.Infrastructure.Postgresql.Repository
 {
     public class TransactionRepository : BaseRepository<Transaction>, ITransactionRepository
     {
+        private readonly ILogger<TransactionRepository> _logger;
         private readonly AppDbContext _dbContext;
 
-        public TransactionRepository(AppDbContext dbContext) : base(dbContext)
+        public TransactionRepository(ILogger<TransactionRepository> logger, AppDbContext dbContext) : base(logger, dbContext)
         {
+            _logger = logger;
             _dbContext = dbContext;
         }
 

@@ -20,6 +20,7 @@ namespace Application.Handlers
 
         public async Task<Guid> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation("CreateTransactionHandler:Handle - Logic");
             // Validate the command
             if (request == null)
             {
@@ -37,7 +38,6 @@ namespace Application.Handlers
             };
             // Save to database
             await _transactionRepository.AddAsync(transaction);
-            await _transactionRepository.SaveChangesAsync();
             return transaction.TransactionExternalId;
         }
     }

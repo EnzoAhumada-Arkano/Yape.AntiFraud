@@ -1,7 +1,7 @@
-﻿using Application.Commands;
-using Application.Queries;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Yape.Application.Transaction.Commands;
+using Yape.Application.Transaction.Queries;
 
 namespace API.Controllers
 {

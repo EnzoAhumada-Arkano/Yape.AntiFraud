@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Commands
+namespace Yape.Application.Transaction.Commands
 {
     public class CreateTransactionCommand : IRequest<Guid>
     {

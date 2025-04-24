@@ -1,21 +1,27 @@
-﻿using Application.Commands;
-using Domain.Repository;
+﻿using Yape.Domain.Repository;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Yape.Infrastructure.Postgresql.Database;
+using Yape.Domain.Message;
+using Yape.Domain.Entities;
+using Yape.Application.Transaction.Commands;
 
 
-namespace Application.Handlers
+namespace Yape.Application.Transaction.Handlers
 {
     public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand, Guid>
     {
         private readonly ILogger<CreateTransactionHandler> _logger;
         private readonly ITransactionRepository _transactionRepository;
+        private readonly IMessageProducer _messageProducer;
 
-        public CreateTransactionHandler(ILogger<CreateTransactionHandler> logger, ITransactionRepository transactionRepository)
+        public CreateTransactionHandler(
+            ILogger<CreateTransactionHandler> logger, 
+            ITransactionRepository transactionRepository, 
+            IMessageProducer messageProducer)
         {
             _logger = logger;
             _transactionRepository = transactionRepository;
+            _messageProducer = messageProducer;
         }
 
         public async Task<Guid> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
@@ -38,6 +44,13 @@ namespace Application.Handlers
             };
             // Save to database
             await _transactionRepository.AddAsync(transaction);
+            // Send message to Kafka
+            await _messageProducer.ProduceMessageAsync(new KafkaMessage
+            {
+                Key = transaction.TransactionExternalId.ToString(),
+                Value = transaction.SourceAccountId.ToString()
+            }, cancellationToken);
+
             return transaction.TransactionExternalId;
         }
     }

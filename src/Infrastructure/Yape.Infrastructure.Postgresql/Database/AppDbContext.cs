@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Yape.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Yape.Infrastructure.Postgresql.Configuration;
 

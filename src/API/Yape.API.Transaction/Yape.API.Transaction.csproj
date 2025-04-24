@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Application\Yape.Application\Yape.Application.csproj" />
+    <ProjectReference Include="..\..\Application\Yape.Application.Transaction\Yape.Application.Transaction.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Yape.Infrastructure.Kafka\Yape.Infrastructure.Kafka.csproj" />
   </ItemGroup>
 
 </Project>

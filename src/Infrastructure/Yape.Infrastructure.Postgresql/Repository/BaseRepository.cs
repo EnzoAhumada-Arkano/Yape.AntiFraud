@@ -1,4 +1,4 @@
-﻿using Domain.Repository;
+﻿using Yape.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;

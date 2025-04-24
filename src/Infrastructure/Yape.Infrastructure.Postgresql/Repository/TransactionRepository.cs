@@ -1,12 +1,7 @@
-﻿using Domain.Entities;
-using Domain.Repository;
+﻿using Yape.Domain.Entities;
+using Yape.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Yape.Infrastructure.Postgresql.Database;
 
 namespace Yape.Infrastructure.Postgresql.Repository
@@ -22,9 +17,11 @@ namespace Yape.Infrastructure.Postgresql.Repository
             _dbContext = dbContext;
         }
 
-        public Task<IEnumerable<Transaction>> GetTransactionsByAccountIdAsync(Guid accountId)
+        public async Task<IEnumerable<Transaction>> GetTransactionsSenderByAccountIdAsync(Guid accountId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Transactions
+                .Where(x => x.SourceAccountId == accountId)
+                .ToListAsync();
         }
 
         public Task<IEnumerable<Transaction>> GetTransactionsByDateRangeAsync(DateTime startDate, DateTime endDate)
@@ -40,6 +37,13 @@ namespace Yape.Infrastructure.Postgresql.Repository
         public Task<IEnumerable<Transaction>> GetTransactionsByTransferTypeIdAsync(int transferTypeId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Transaction>> GetTransactionsReceiverByAccountIdAsync(Guid accountId)
+        {
+            return await _dbContext.Transactions
+                .Where(x => x.TargetAccountId == accountId)
+                .ToListAsync();
         }
     }
 

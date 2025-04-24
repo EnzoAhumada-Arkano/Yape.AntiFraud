@@ -1,4 +1,4 @@
-﻿using Application.Handlers;
+﻿using Yape.Application.Transaction.Handlers;
 
 namespace Yape.Transaction.API.Configurations
 {

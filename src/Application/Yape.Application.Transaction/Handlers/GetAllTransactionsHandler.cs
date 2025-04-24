@@ -1,13 +1,13 @@
-﻿using Application.Queries;
-using Domain.Entities;
+﻿using Yape.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Yape.Infrastructure.Postgresql.Database;
+using Yape.Application.Transaction.Queries;
 
 
-namespace Application.Handlers
+namespace Yape.Application.Transaction.Handlers
 {
-    public class GetAllTransactionsHandler : IRequestHandler<GetAllTransactionsQuery, List<Transaction>>
+    public class GetAllTransactionsHandler : IRequestHandler<GetAllTransactionsQuery, List<Yape.Domain.Entities.Transaction>>
     {
         private readonly AppDbContext _dbContext;
 
@@ -16,15 +16,15 @@ namespace Application.Handlers
             _dbContext = dbContext;
         }
 
-        public async Task<List<Transaction>> Handle(GetAllTransactionsQuery request, CancellationToken cancellationToken)
+        public async Task<List<Yape.Domain.Entities.Transaction>> Handle(GetAllTransactionsQuery request, CancellationToken cancellationToken)
         {
-            List<Transaction> transactionsRetrieve = new List<Transaction>();
+            List<Yape.Domain.Entities.Transaction> transactionsRetrieve = new List<Yape.Domain.Entities.Transaction>();
             // Fetch transactions from the database
             var transactions = await _dbContext.Transactions.ToListAsync(cancellationToken);
             foreach (var transaction in transactions)
             {
                 // Map the transaction to TransactionRetrieve
-                var transactionRetrieve = new Transaction
+                var transactionRetrieve = new Yape.Domain.Entities.Transaction
                 {
                     TransactionExternalId = transaction.TransactionExternalId,
                     CreatedAt = transaction.CreatedAt,

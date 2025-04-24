@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Yape.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Queries
+namespace Yape.Application.Transaction.Queries
 {
-    public class GetAllTransactionsQuery : IRequest<List<Transaction>> {}
+    public class GetAllTransactionsQuery : IRequest<List<Yape.Domain.Entities.Transaction>> {}
 }

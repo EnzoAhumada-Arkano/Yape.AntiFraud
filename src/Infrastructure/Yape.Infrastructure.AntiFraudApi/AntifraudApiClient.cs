@@ -9,17 +9,17 @@ namespace Yape.Infrastructure.AntiFraudApi
     public class AntifraudApiClient : IAntifraudApiClient
     {
         private readonly ILogger<AntifraudApiClient> _logger;
-        private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
 
         public AntifraudApiClient(ILogger<AntifraudApiClient> logger, IConfiguration configuration)
         {
             _logger = logger;
-            _configuration = configuration;
             _httpClient = new HttpClient() { BaseAddress = new Uri(configuration["AntifraudApi:BaseAddress"]) };
         }
-        public async Task ValidateTransactionAsync(Guid transactionExternalId)
+        public async Task<bool> ValidateTransactionAsync(Guid transactionExternalId)
         {
+            bool isValid = false;
+            _logger.LogInformation("AntifraudApiClient:ValidateTransactionAsync - Call");
             //create body
             var transaction = new
             {
@@ -32,12 +32,15 @@ namespace Yape.Infrastructure.AntiFraudApi
                 HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync("AntiFraud/Validate", content);
                 httpResponseMessage.EnsureSuccessStatusCode();
                 string responseBody = await httpResponseMessage.Content.ReadAsStringAsync();
+                isValid = JsonSerializer.Deserialize<bool>(responseBody);
                 _logger.LogInformation("Response from API: {ResponseBody}", responseBody);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error sending message to API.");
             }
+
+            return isValid;
         }
     }
 }

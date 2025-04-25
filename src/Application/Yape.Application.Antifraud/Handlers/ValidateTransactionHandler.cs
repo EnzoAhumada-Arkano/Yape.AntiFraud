@@ -18,14 +18,14 @@ namespace Yape.Application.Antifraud.Handlers
         }
         public async Task<bool> Handle(ValidateTransactionCommand request, CancellationToken cancellationToken)
         {
-            bool isValid = true;
+            bool isValid = false;
             _logger.LogInformation("ValidateTransactionHandler:Handle - Logic");
             var transaction = await _transactionRepository.GetTransactionsByExternalIdAsync(request.TransactionExternalId);
 
             if (transaction == null)
             {
                 _logger.LogWarning("Transaction not found");
-                isValid = false;                
+                isValid = false;             
             }
 
             //Validate value of the transaction
@@ -38,16 +38,13 @@ namespace Yape.Application.Antifraud.Handlers
                 if (valueIsValid && valueSumTodayIsValid)
                 {
                     _logger.LogInformation("Transaction is valid");
-                    transaction.Status = (int)TranstactionStatus.approved;
+                    isValid = true;
                 }
                 else
                 {
                     _logger.LogWarning("Transaction is invalid");
-                    transaction.Status = (int)TranstactionStatus.rejected;
                     isValid = false;
                 }
-                //Update transaction status
-                await _transactionRepository.UpdateAsync(transaction);
             }
 
             return isValid;
@@ -73,7 +70,6 @@ namespace Yape.Application.Antifraud.Handlers
             if (totalValue > 20000)
             {
                 _logger.LogWarning("Total transaction value exceeds limit");
-                transaction.Status = (int)TranstactionStatus.rejected;
                 return false;
             }
             return true;

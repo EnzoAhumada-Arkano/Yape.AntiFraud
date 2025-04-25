@@ -37,6 +37,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yape.Infrastructure.Postgre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yape.Infrastructure.AntiFraudApi", "src\Infrastructure\Yape.Infrastructure.AntiFraudApi\Yape.Infrastructure.AntiFraudApi.csproj", "{E854D78D-B535-43ED-AE6F-A1710A474F8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yape.Infrastructure.TransactionApi", "src\Infrastructure\Yape.Infrastructure.TransactionApi\Yape.Infrastructure.TransactionApi.csproj", "{36232FA1-D860-4557-A258-DA44EA8BF48A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yape.Transaction.Worker", "src\Background\Yape.Transaction.Worker\Yape.Transaction.Worker.csproj", "{1B2664A8-89F7-463C-9493-AD3F526E113D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,6 +171,30 @@ Global
 		{E854D78D-B535-43ED-AE6F-A1710A474F8E}.Release|x64.Build.0 = Release|Any CPU
 		{E854D78D-B535-43ED-AE6F-A1710A474F8E}.Release|x86.ActiveCfg = Release|Any CPU
 		{E854D78D-B535-43ED-AE6F-A1710A474F8E}.Release|x86.Build.0 = Release|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Debug|x64.Build.0 = Debug|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Debug|x86.Build.0 = Debug|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Release|x64.ActiveCfg = Release|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Release|x64.Build.0 = Release|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Release|x86.ActiveCfg = Release|Any CPU
+		{36232FA1-D860-4557-A258-DA44EA8BF48A}.Release|x86.Build.0 = Release|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Debug|x64.Build.0 = Debug|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Debug|x86.Build.0 = Debug|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Release|x64.ActiveCfg = Release|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Release|x64.Build.0 = Release|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Release|x86.ActiveCfg = Release|Any CPU
+		{1B2664A8-89F7-463C-9493-AD3F526E113D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,6 +215,8 @@ Global
 		{48089A12-F10B-4E1E-89D7-AE299C6A880C} = {9048EB7F-3875-A59E-E36B-5BD4C6F2A282}
 		{5A01D828-E002-4DF3-933F-E5CDB733767A} = {9048EB7F-3875-A59E-E36B-5BD4C6F2A282}
 		{E854D78D-B535-43ED-AE6F-A1710A474F8E} = {9048EB7F-3875-A59E-E36B-5BD4C6F2A282}
+		{36232FA1-D860-4557-A258-DA44EA8BF48A} = {9048EB7F-3875-A59E-E36B-5BD4C6F2A282}
+		{1B2664A8-89F7-463C-9493-AD3F526E113D} = {0CC75A01-4390-C2B7-DF35-E457BEBA5A7A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8912E50A-89AD-4F20-99AA-247BEA376940}

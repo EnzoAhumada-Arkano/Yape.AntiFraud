@@ -22,16 +22,31 @@ namespace API.Controllers
             var transactions = await _mediator.Send(new GetAllTransactionsQuery());
             return Ok(transactions);
         }
-        [HttpGet("GetByExternalId/{externalTransactionId}")]
-        public async Task<IActionResult> GetByExternalId(Guid externalTransactionId)
+        [HttpGet("GetByExternalId/{transactionExternalId}")]
+        public async Task<IActionResult> GetByExternalId(Guid transactionExternalId)
         {
             var transaction = await _mediator.Send(new GetTransactionByExternalIdQuery()
             {
-                TransactionExternalId = externalTransactionId
+                TransactionExternalId = transactionExternalId
             });
             if (transaction == null)
             {
                 return NotFound();
+            }
+            return Ok(transaction);
+        }
+
+        [HttpPatch("SetStatus/ExternalId/{transactionExternalId}")]
+        public async Task<IActionResult> PatchStatus(Guid transactionExternalId, int status)
+        {
+            var transaction = await _mediator.Send(new PatchTransactionStatusCommand()
+            {
+                TransactionExternalId = transactionExternalId,
+                Status = status
+            });
+            if (transaction == null)
+            {
+                return BadRequest();
             }
             return Ok(transaction);
         }

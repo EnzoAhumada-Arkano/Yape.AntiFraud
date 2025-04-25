@@ -9,6 +9,7 @@ namespace Yape.Transaction.API.Configurations
             serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateTransactionHandler>());
             serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetTrasanctionByExternalIdHandler>());
             serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAllTransactionsHandler>());
+            serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<PatchTransanctionStatusHandler>());
             return serviceCollection;
         }
     }

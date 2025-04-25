@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Yape.Domain.ApiClient
 {
-    public interface IAntifraudApiClient
+    public interface ITransactionApiClient
     {
-        Task<bool> ValidateTransactionAsync(Guid transactionExternalId);
+        Task UpdateStatusAsync(Guid transactionExternalId, int status);
     }
 }

@@ -8,23 +8,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Yape.Domain.Entities;
 using Yape.Domain.Message;
+using Yape.Infrastructure.Kafka.AntiFraudMessage;
 
-namespace Yape.Infrastructure.Kafka.AntiFraudMessage
+namespace Yape.Infrastructure.Kafka.TransactionMessage
 {
-    public class AntifraudMessageProducer : IMessageProducer
+    public class TransactionMessageProducer : IMessageProducer
     {
         private readonly string _topic;
         private readonly IProducer<string, string> _producer;
 
-        public AntifraudMessageProducer(ILogger<AntifraudMessageProducer> logger, IConfiguration configuration)
+        public TransactionMessageProducer(ILogger<AntifraudMessageProducer> logger, IConfiguration configuration)
         {
             var config = new ProducerConfig()
             {
-                BootstrapServers = configuration["Kafka:BootstrapServers"],                
+                BootstrapServers = configuration["Kafka:BootstrapServers"],
                 AllowAutoCreateTopics = true,
                 Acks = Acks.All,
             };
-            _topic = configuration["Kafka:AntifraudTopic"];
+            _topic = configuration["Kafka:TransactionTopic"];
             _producer = new ProducerBuilder<string, string>(config).Build();
         }
 

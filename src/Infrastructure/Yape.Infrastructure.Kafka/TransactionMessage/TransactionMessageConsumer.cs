@@ -4,20 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Yape.Domain.ApiClient;
 using Yape.Domain.Message;
 
-namespace Yape.Infrastructure.Kafka.AntiFraudMessage
+namespace Yape.Infrastructure.Kafka.TransactionMessage
 {
-    public class AntifraudMessageConsumer : IMessageConsumer
+    public class TransactionMessageConsumer : IMessageConsumer
     {
         private readonly string _topic;
         private readonly IConsumer<string, string> _consumer;
         private readonly IAntifraudApiClient _antifraudApiClient;
 
-        public AntifraudMessageConsumer(IConfiguration configuration, IAntifraudApiClient antifraudApiClient)
+        public TransactionMessageConsumer(IConfiguration configuration, IAntifraudApiClient antifraudApiClient)
         {
             var config = new ConsumerConfig
             {
@@ -27,7 +26,7 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
             };
 
             _consumer = new ConsumerBuilder<string, string>(config).Build();
-            _topic = configuration["Kafka:AntifraudTopic"];
+            _topic = configuration["Kafka:TransactionTopic"];
             _antifraudApiClient = antifraudApiClient;
         }
         public async Task ConsumeMessageAsync(CancellationToken cancellationToken)
@@ -35,7 +34,7 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
             _consumer.Subscribe(_topic);
 
             await Task.Run(async () =>
-            {                
+            {
                 try
                 {
                     while (!cancellationToken.IsCancellationRequested)
@@ -44,7 +43,7 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
                         Console.WriteLine($"Message consume from Kafka Key: '{cr.Message.Key}' - Value: '{cr.Message.Value}' at: '{cr.Topic}'.");
                         Guid transactionExternalId = Guid.Parse(cr.Message.Key);
                         var isValid = await _antifraudApiClient.ValidateTransactionAsync(transactionExternalId);
-                        //Send message to transaction worker
+                        // Send message to transaction worker
                     }
                 }
                 catch (OperationCanceledException)
@@ -56,7 +55,6 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
                     Console.WriteLine($"Error consuming message: {ex.Message}");
                 }
             }, cancellationToken);
-
         }
     }
 }

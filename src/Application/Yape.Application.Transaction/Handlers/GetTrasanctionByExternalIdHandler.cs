@@ -5,10 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Yape.Infrastructure.Postgresql.Database;
 using Yape.Application.Transaction.Queries;
+using Domain.Models;
 
 namespace Yape.Application.Transaction.Handlers
 {
-    public class GetTrasanctionByExternalIdHandler : IRequestHandler<GetTransactionByExternalIdQuery, Yape.Domain.Entities.Transaction>
+    public class GetTrasanctionByExternalIdHandler : IRequestHandler<GetTransactionByExternalIdQuery, TransactionRetrieve>
     {
         private readonly ILogger<GetTrasanctionByExternalIdHandler> _logger;
         private readonly ITransactionRepository _transactionRepository;
@@ -19,7 +20,7 @@ namespace Yape.Application.Transaction.Handlers
             _transactionRepository = transactionRepository;
         }
 
-        public async Task<Yape.Domain.Entities.Transaction> Handle(GetTransactionByExternalIdQuery request, CancellationToken cancellationToken)
+        public async Task<TransactionRetrieve> Handle(GetTransactionByExternalIdQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetTrasanctionByExternalIdHandler:Handle - Logic");
             var transaction = await _transactionRepository.GetTransactionsByExternalIdAsync(request.TransactionExternalId);
@@ -27,24 +28,18 @@ namespace Yape.Application.Transaction.Handlers
             if (transaction != null)
             {
                 // Map the transaction infrastructure model to the domain model
-                var transactionDomain = new Yape.Domain.Entities.Transaction
+                var transactionRetrieve = new TransactionRetrieve
                 {
                     TransactionExternalId = transaction.TransactionExternalId,
                     CreatedAt = transaction.CreatedAt,
-                    SourceAccountId = transaction.SourceAccountId,
-                    TargetAccountId = transaction.TargetAccountId,
-                    TransferTypeId = transaction.TransferTypeId,
-                    Value = transaction.Value
                 };
 
-                return transactionDomain;
+                return transactionRetrieve;
             }
             else
             {
                 return null;
             }
-
-            
         }
     }
 }

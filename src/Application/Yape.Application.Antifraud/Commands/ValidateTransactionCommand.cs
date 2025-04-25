@@ -10,6 +10,5 @@ namespace Yape.Application.Antifraud.Commands
     public class ValidateTransactionCommand : IRequest<bool>
     {
         public Guid TransactionExternalId { get; set; }
-        public Guid SourceAccountId { get; set; }
     }
 }

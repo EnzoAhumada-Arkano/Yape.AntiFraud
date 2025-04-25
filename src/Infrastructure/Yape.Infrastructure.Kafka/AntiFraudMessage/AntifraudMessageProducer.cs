@@ -33,14 +33,13 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
 
         public async Task ProduceMessageAsync(KafkaMessage message, CancellationToken cancellationToken)
         {
-            var result = await _producer.ProduceAsync(topic: _topic, 
+            var pr = await _producer.ProduceAsync(topic: _topic,
             new Message<string, string>
             {
                 Key = message.Key,
                 Value = message.Value
             }, cancellationToken);
-
-            Console.WriteLine($"Message sent to Kafka: {result.TopicPartitionOffset}");
+            Console.WriteLine($"Message sent to Kafka Key: '{pr.Message.Key}' - Value: '{pr.Message.Value}' at: '{pr.Topic}'.");
         }
     }
 }

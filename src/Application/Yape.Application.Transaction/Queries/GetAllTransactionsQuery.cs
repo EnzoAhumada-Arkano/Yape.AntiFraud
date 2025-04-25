@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Models;
 
 namespace Yape.Application.Transaction.Queries
 {
-    public class GetAllTransactionsQuery : IRequest<List<Yape.Domain.Entities.Transaction>> {}
+    public class GetAllTransactionsQuery : IRequest<List<TransactionRetrieve>> {}
 }

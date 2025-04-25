@@ -33,7 +33,6 @@ namespace Yape.Application.Transaction.Handlers
                 throw new ArgumentNullException(nameof(request));
             }
 
-
             // Map command to entity
             var transaction = new Domain.Entities.Transaction
             {
@@ -43,12 +42,14 @@ namespace Yape.Application.Transaction.Handlers
                 Value = request.Value,
             };
             // Save to database
+            _logger.LogInformation("CreateTransactionHandler:Handle - Save to database");
             await _transactionRepository.AddAsync(transaction);
             // Send message to Kafka
+            _logger.LogInformation("CreateTransactionHandler:Handle - Send message to kakfa");
             await _messageProducer.ProduceMessageAsync(new KafkaMessage
             {
                 Key = transaction.TransactionExternalId.ToString(),
-                Value = transaction.SourceAccountId.ToString()
+                Value = $"Validate transaction: {transaction.TransactionExternalId.ToString()}"
             }, cancellationToken);
 
             return transaction.TransactionExternalId;

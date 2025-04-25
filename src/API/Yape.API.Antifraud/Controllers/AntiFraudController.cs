@@ -17,7 +17,7 @@ namespace Yape.Antifraud.API.Controllers
         }
 
         [HttpPost("Validate")]
-        public async Task<IActionResult> ValidateTransaction([FromBody] ValidateTransactionCommand command)
+        public async Task<IActionResult> ValidateTransaction(ValidateTransactionCommand command)
         {
             if (command == null)
             {

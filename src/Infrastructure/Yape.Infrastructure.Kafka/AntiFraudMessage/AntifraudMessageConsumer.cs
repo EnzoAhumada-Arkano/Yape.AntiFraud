@@ -21,15 +21,13 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
         {
             var config = new ConsumerConfig
             {
-                //BootstrapServers = configuration["Kafka:BootstrapServers"],
-                BootstrapServers = "localhost:9092",
-                GroupId = "dotnet-consumer-group",
+                BootstrapServers = configuration["Kafka:BootstrapServers"],
+                GroupId = configuration["Kafka:GroupId"],
                 AutoOffsetReset = AutoOffsetReset.Latest
             };
 
             _consumer = new ConsumerBuilder<string, string>(config).Build();
-            //_topic = configuration["Kafka:Topic"];
-            _topic = "yape-antifraud-topic";
+            _topic = configuration["Kafka:Topic"];
             _antifraudApiClient = antifraudApiClient;
         }
         public async Task ConsumeMessageAsync(CancellationToken cancellationToken)

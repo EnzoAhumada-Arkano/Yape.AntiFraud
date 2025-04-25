@@ -21,13 +21,11 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
 
             var config = new ProducerConfig()
             {
-                //BootstrapServers = configuration["Kafka:BootstrapServers"]
-                BootstrapServers = "localhost:9092",
+                BootstrapServers = configuration["Kafka:BootstrapServers"],                
                 AllowAutoCreateTopics = true,
                 Acks = Acks.All,
             };
-            //_topic = configuration["Kafka:Topic"];
-            _topic = "yape-antifraud-topic";
+            _topic = configuration["Kafka:Topic"];
             _producer = new ProducerBuilder<string, string>(config).Build();
         }
 

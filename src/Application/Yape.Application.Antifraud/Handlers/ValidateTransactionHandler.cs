@@ -47,7 +47,7 @@ namespace Yape.Application.Antifraud.Handlers
 
         private async Task ProduceMessageAsync(Guid transactionId, string message, CancellationToken cancellationToken)
         {
-            await _messageProducer.ProduceMessageAsync(new KafkaMessage
+            await _messageProducer.ProduceMessageAsync(new QueueMessage
             {
                 Key = transactionId.ToString(),
                 Value = message

@@ -7,11 +7,11 @@ namespace Yape.Antifraud.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AntiFraudController : ControllerBase
+    public class AntiFraudsController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public AntiFraudController(IMediator mediator)
+        public AntiFraudsController(IMediator mediator)
         {
             _mediator = mediator;
         }

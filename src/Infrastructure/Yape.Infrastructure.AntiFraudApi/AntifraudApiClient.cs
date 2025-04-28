@@ -10,7 +10,7 @@ namespace Yape.Infrastructure.AntiFraudApi
     {
         private readonly ILogger<AntifraudApiClient> _logger;
         private readonly HttpClient _httpClient;
-        private readonly string _apiName = "Antifraud";
+        private readonly string _apiName = "Antifrauds";
 
         public AntifraudApiClient(ILogger<AntifraudApiClient> logger, IConfiguration configuration)
         {

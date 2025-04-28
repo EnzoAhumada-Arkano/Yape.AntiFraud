@@ -9,6 +9,6 @@ namespace Yape.Domain.Message
 {
     public interface IMessageProducer
     {
-        Task ProduceMessageAsync(KafkaMessage message, CancellationToken cancellationToken);
+        Task ProduceMessageAsync(QueueMessage message, CancellationToken cancellationToken);
     }
 }

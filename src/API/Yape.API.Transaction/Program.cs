@@ -1,20 +1,13 @@
-using Yape.Domain.Repository;
-using Microsoft.EntityFrameworkCore;
-using Yape.Infrastructure.Postgresql.Database;
-using Yape.Infrastructure.Postgresql.Repository;
-using Yape.Transaction.API.Configurations;
 using Yape.API.Transaction.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Database context
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString));
+DatabaseConfiguration.AddDatabaseConfiguration(builder);
 // Add services to the container.
-builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
-MediatRConfiguration.ConfigureMediatRService(builder.Services);
-KafkaConfiguration.ConfigureKafka(builder.Services);
+ServiceConfiguration.AddServiceConfiguration(builder.Services);
+MediatRConfiguration.AddMediatRService(builder.Services);
+KafkaConfiguration.AddKafkaConfiguration(builder.Services);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -22,14 +15,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    if (dbContext != null)
-    {
-        await dbContext.Database.MigrateAsync();
-    }
-}
+// Configure database migration
+DatabaseConfiguration.ConfigureDatabase(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

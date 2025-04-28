@@ -35,7 +35,7 @@ namespace Yape.Infrastructure.Kafka.TransactionMessage
             _logger = logger;
         }
 
-        public async Task ProduceMessageAsync(KafkaMessage message, CancellationToken cancellationToken)
+        public async Task ProduceMessageAsync(QueueMessage message, CancellationToken cancellationToken)
         {
             _logger.LogInformation("TransactionMessageProducer:ProduceMessageAsync - Start");
             var pr = await _producer.ProduceAsync(topic: _topicName,

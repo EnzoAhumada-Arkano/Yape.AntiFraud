@@ -1,11 +1,11 @@
 ﻿using Yape.Domain.Message;
 using Yape.Infrastructure.Kafka.TransactionMessage;
 
-namespace Yape.API.Antifraud.Configurations
+namespace Yape.API.AntiFraud.Configurations
 {
     public static class KafkaConfiguration
     {
-        public static IServiceCollection ConfigureKafka(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddKafkaConfiguration(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<IMessageProducer, TransactionMessageProducer>();
             return serviceCollection;

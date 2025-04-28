@@ -22,7 +22,7 @@ namespace API.Controllers
             var transactions = await _mediator.Send(new GetAllTransactionsQuery());
             return Ok(transactions);
         }
-        [HttpGet("GetByExternalId/{transactionExternalId}")]
+        [HttpGet("TransactionExternalId/{transactionExternalId}")]
         public async Task<IActionResult> GetByExternalId(Guid transactionExternalId)
         {
             var transaction = await _mediator.Send(new GetTransactionByExternalIdQuery()
@@ -36,7 +36,7 @@ namespace API.Controllers
             return Ok(transaction);
         }
 
-        [HttpPatch("SetStatus/ExternalId/{transactionExternalId}")]
+        [HttpPatch("Status/TransactionExternalId/{transactionExternalId}")]
         public async Task<IActionResult> PatchStatus(PatchTransactionStatusCommand command)
         {
             var transaction = await _mediator.Send(new PatchTransactionStatusCommand()

@@ -35,7 +35,7 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
             _logger = logger;
         }
 
-        public async Task ProduceMessageAsync(KafkaMessage message, CancellationToken cancellationToken)
+        public async Task ProduceMessageAsync(QueueMessage message, CancellationToken cancellationToken)
         {
             _logger.LogInformation("AntifraudMessageProducer:ProduceMessageAsync - Start");
             var pr = await _producer.ProduceAsync(topic: _topicName,

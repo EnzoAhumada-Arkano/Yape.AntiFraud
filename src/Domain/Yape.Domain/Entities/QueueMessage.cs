@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Yape.Domain.Entities
 {
-    public class KafkaMessage
+    public class QueueMessage
     {
         public string Key { get; set; } = default!;
         public string Value { get; set; } = default!;

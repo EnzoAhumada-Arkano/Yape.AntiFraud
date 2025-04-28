@@ -37,7 +37,7 @@ namespace Yape.Application.Transaction.Handlers
             var transaction = new Domain.Entities.Transaction
             {
                 SourceAccountId = request.SourceAccountId,
-                TargetAccountId = request.DestinationAccountId,
+                TargetAccountId = request.TargetAccountId,
                 TransferTypeId = request.TransferTypeId,
                 Value = request.Value,
             };

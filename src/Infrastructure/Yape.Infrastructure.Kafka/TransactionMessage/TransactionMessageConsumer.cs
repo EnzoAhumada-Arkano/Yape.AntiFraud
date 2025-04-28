@@ -93,7 +93,7 @@ namespace Yape.Infrastructure.Kafka.TransactionMessage
                     while (!cancellationToken.IsCancellationRequested)
                     {
                         var cr = _consumer.Consume(cancellationToken);
-                        Console.WriteLine($"Message consume from Kafka Key: '{cr.Message.Key}' - Value: '{cr.Message.Value}' at: '{cr.Topic}'.");
+                        _logger.LogInformation("Message consume from Kafka Key: '{Key}' - Value: '{Value}' at: '{Topic}'.", cr.Message.Key, cr.Message.Value, cr.Topic);
                         Guid transactionExternalId = Guid.Parse(cr.Message.Key);
                         if (cr.Message.Value.Contains(TrasanctionValidateStatus.TransactionValid))
                         {
@@ -106,13 +106,14 @@ namespace Yape.Infrastructure.Kafka.TransactionMessage
                         }
                     }
                 }
-                catch (OperationCanceledException)
+                catch (OperationCanceledException ex)
                 {
                     _consumer.Close();
+                    _logger.LogError(ex, "Error operation canceled: {Message}", ex.Message);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error consuming message: {ex.Message}");
+                    _logger.LogError(ex, "Error consuming message: {Message}", ex.Message);
                 }
             }, cancellationToken);
         }

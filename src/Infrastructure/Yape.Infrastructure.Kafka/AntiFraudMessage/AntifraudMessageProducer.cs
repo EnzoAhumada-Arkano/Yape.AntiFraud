@@ -44,7 +44,7 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
                 Key = message.Key,
                 Value = message.Value
             }, cancellationToken);
-            Console.WriteLine($"Message sent to Kafka Key: '{pr.Message.Key}' - Value: '{pr.Message.Value}' at: '{pr.Topic}'.");
+            _logger.LogInformation("Message sent to Kafka Key: '{Key}' - Value: '{Value}' at: '{Topic}'.", pr.Message.Key, pr.Message.Value, pr.Topic);
         }
     }
 }

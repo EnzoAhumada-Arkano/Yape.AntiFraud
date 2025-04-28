@@ -73,7 +73,7 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
                 }
                 catch (CreateTopicsException ex)
                 {
-                    _logger.LogError(ex, "An error occured creating topic");
+                    _logger.LogError(ex, "An error occured creating topic - {Message}", ex.Message);
                 }
             }
         }
@@ -90,10 +90,10 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
                     while (!cancellationToken.IsCancellationRequested)
                     {
                         var cr = _consumer.Consume(cancellationToken);
-                        Console.WriteLine($"Message consume from Kafka Key: '{cr.Message.Key}' - Value: '{cr.Message.Value}' at: '{cr.Topic}'.");
+                        _logger.LogInformation("Message consume from Kafka Key: '{Key}' - Value: '{Value}' at: '{Topic}'.", cr.Message.Key, cr.Message.Value, cr.Topic );
                         Guid transactionExternalId = Guid.Parse(cr.Message.Key);
+                        //Call the antifraud API to validate the transaction
                         await _antifraudApiClient.ValidateTransactionAsync(transactionExternalId);
-                        //Send message to transaction worker
                     }
                 }
                 catch (OperationCanceledException)
@@ -102,7 +102,7 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error consuming message: {ex.Message}");
+                    _logger.LogError(ex, "Error consuming message: {Message}", ex.Message);
                 }
             }, cancellationToken);
 

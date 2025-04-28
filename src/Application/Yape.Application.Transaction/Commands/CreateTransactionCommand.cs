@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Domain.Models;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,8 @@ using System.Threading.Tasks;
 
 namespace Yape.Application.Transaction.Commands
 {
-    public class CreateTransactionCommand : IRequest<Guid>
+    public class CreateTransactionCommand : TransactionCreate, IRequest<Guid>
     {
-        public Guid SourceAccountId { get; set; }
-        public Guid DestinationAccountId { get; set; }
-        public int TransferTypeId { get; set; }
-        public int Value { get; set; }
+
     }
 }

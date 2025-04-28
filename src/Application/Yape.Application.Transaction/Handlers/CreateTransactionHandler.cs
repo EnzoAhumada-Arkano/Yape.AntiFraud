@@ -45,14 +45,18 @@ namespace Yape.Application.Transaction.Handlers
             _logger.LogInformation("CreateTransactionHandler:Handle - Save to database");
             await _transactionRepository.AddAsync(transaction);
             // Send message to Kafka
-            _logger.LogInformation("CreateTransactionHandler:Handle - Send message to kakfa");
-            await _messageProducer.ProduceMessageAsync(new KafkaMessage
-            {
-                Key = transaction.TransactionExternalId.ToString(),
-                Value = $"Validate transaction: {transaction.TransactionExternalId.ToString()}"
-            }, cancellationToken);
+            await ProduceMessageAsync(transaction.TransactionExternalId, "Transaction created", cancellationToken);
 
             return transaction.TransactionExternalId;
+        }
+
+        private async Task ProduceMessageAsync(Guid transactionId, string message, CancellationToken cancellationToken)
+        {
+            await _messageProducer.ProduceMessageAsync(new KafkaMessage
+            {
+                Key = transactionId.ToString(),
+                Value = message
+            }, cancellationToken);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Yape.Infrastructure.AntiFraudApi
     {
         private readonly ILogger<AntifraudApiClient> _logger;
         private readonly HttpClient _httpClient;
+        private readonly string _apiName = "Antifraud";
 
         public AntifraudApiClient(ILogger<AntifraudApiClient> logger, IConfiguration configuration)
         {
@@ -29,7 +30,7 @@ namespace Yape.Infrastructure.AntiFraudApi
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             try
             {
-                HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync("AntiFraud/Validate", content);
+                HttpResponseMessage httpResponseMessage = await _httpClient.PostAsync($"{_apiName}/Validate", content);
                 httpResponseMessage.EnsureSuccessStatusCode();
                 string responseBody = await httpResponseMessage.Content.ReadAsStringAsync();
                 isValid = JsonSerializer.Deserialize<bool>(responseBody);

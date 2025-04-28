@@ -3,6 +3,7 @@ using Yape.Domain.ApiClient;
 using Yape.Domain.Message;
 using Yape.Infrastructure.AntiFraudApi;
 using Yape.Infrastructure.Kafka.AntiFraudMessage;
+using Yape.Infrastructure.Kafka.TransactionMessage;
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddScoped<IMessageConsumer, AntifraudMessageConsumer>();

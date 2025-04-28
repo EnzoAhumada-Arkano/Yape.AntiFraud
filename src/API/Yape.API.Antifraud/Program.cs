@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Yape.Antifraud.API.Configurations;
+using Yape.API.Antifraud.Configurations;
 using Yape.Domain.Repository;
 using Yape.Infrastructure.Postgresql.Database;
 using Yape.Infrastructure.Postgresql.Repository;
@@ -10,9 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+
 // Add services to the container.
 builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
 MediatRConfiguration.ConfigureMediatRService(builder.Services);
+KafkaConfiguration.ConfigureKafka(builder.Services);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

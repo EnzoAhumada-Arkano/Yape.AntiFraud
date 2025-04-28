@@ -8,4 +8,10 @@ public static class Constants
         approved = 1,
         rejected = 2,
     }
+
+    public struct TrasanctionValidateStatus
+    {
+        public const string TransactionValid = "Transaction is valid";
+        public const string TransactionInvalid = "Transaction is invalid";
+    }
 }

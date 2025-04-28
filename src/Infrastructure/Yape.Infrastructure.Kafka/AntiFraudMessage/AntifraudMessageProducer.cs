@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using Confluent.Kafka.Admin;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,24 +14,31 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
 {
     public class AntifraudMessageProducer : IMessageProducer
     {
-        private readonly string _topic;
+        private readonly string _topicName;
+        private readonly string _bootstrapServers;
         private readonly IProducer<string, string> _producer;
+        private readonly ILogger<AntifraudMessageProducer> _logger;
 
         public AntifraudMessageProducer(ILogger<AntifraudMessageProducer> logger, IConfiguration configuration)
         {
+            _topicName = configuration["Kafka:AntifraudTopic"];
+            _bootstrapServers = configuration["Kafka:BootstrapServers"];
+
             var config = new ProducerConfig()
             {
-                BootstrapServers = configuration["Kafka:BootstrapServers"],                
+                BootstrapServers = _bootstrapServers,                
                 AllowAutoCreateTopics = true,
                 Acks = Acks.All,
             };
-            _topic = configuration["Kafka:AntifraudTopic"];
+            
             _producer = new ProducerBuilder<string, string>(config).Build();
+            _logger = logger;
         }
 
         public async Task ProduceMessageAsync(KafkaMessage message, CancellationToken cancellationToken)
         {
-            var pr = await _producer.ProduceAsync(topic: _topic,
+            _logger.LogInformation("AntifraudMessageProducer:ProduceMessageAsync - Start");
+            var pr = await _producer.ProduceAsync(topic: _topicName,
             new Message<string, string>
             {
                 Key = message.Key,

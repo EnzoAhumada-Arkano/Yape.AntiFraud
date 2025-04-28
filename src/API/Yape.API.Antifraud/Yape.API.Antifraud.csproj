@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Application\Yape.Application.Antifraud\Yape.Application.Antifraud.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Yape.Infrastructure.Kafka\Yape.Infrastructure.Kafka.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Yape.Infrastructure.Postgresql\Yape.Infrastructure.Postgresql.csproj" />
   </ItemGroup>
 

@@ -10,6 +10,7 @@ namespace Yape.Infrastructure.TransactionApi
     {
         private readonly ILogger<TransactionApiClient> _logger;
         private readonly HttpClient _httpClient;
+        private readonly string _apiName = "Transactions";
 
         public TransactionApiClient(ILogger<TransactionApiClient> logger, IConfiguration configuration)
         {
@@ -28,7 +29,7 @@ namespace Yape.Infrastructure.TransactionApi
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             try
             {
-                HttpResponseMessage httpResponseMessage = await _httpClient.PutAsync($"SetStatus/ExternalId/{transactionExternalId}", content);
+                HttpResponseMessage httpResponseMessage = await _httpClient.PatchAsync($"{_apiName}/SetStatus/ExternalId/{transactionExternalId}", content);
                 httpResponseMessage.EnsureSuccessStatusCode();
                 string responseBody = await httpResponseMessage.Content.ReadAsStringAsync();
                 _logger.LogInformation("Response from API: {ResponseBody}", responseBody);
@@ -37,7 +38,6 @@ namespace Yape.Infrastructure.TransactionApi
             {
                 _logger.LogError(ex, "Error sending message to API.");
             }
-            throw new NotImplementedException();
         }
     }
 }

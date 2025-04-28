@@ -37,14 +37,15 @@ namespace API.Controllers
         }
 
         [HttpPatch("SetStatus/ExternalId/{transactionExternalId}")]
-        public async Task<IActionResult> PatchStatus(Guid transactionExternalId, int status)
+        public async Task<IActionResult> PatchStatus(PatchTransactionStatusCommand command)
         {
             var transaction = await _mediator.Send(new PatchTransactionStatusCommand()
             {
-                TransactionExternalId = transactionExternalId,
-                Status = status
+                TransactionExternalId = command.TransactionExternalId,
+                Status = command.Status
             });
-            if (transaction == null)
+
+            if (transaction == Guid.Empty) // Check for Guid.Empty instead of null
             {
                 return BadRequest();
             }

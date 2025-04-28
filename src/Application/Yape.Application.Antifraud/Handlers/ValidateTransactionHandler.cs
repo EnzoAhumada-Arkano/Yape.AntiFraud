@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Yape.Application.Antifraud.Commands;
 using static Domain.Constants;
+using Yape.Domain.Message;
+using Yape.Domain.Entities;
 
 namespace Yape.Application.Antifraud.Handlers
 {
@@ -10,23 +12,20 @@ namespace Yape.Application.Antifraud.Handlers
     {
         private readonly ILogger<ValidateTransactionHandler> _logger;
         private readonly ITransactionRepository _transactionRepository;
+        private readonly IMessageProducer _messageProducer;
 
-        public ValidateTransactionHandler(ILogger<ValidateTransactionHandler> logger, ITransactionRepository transactionRepository)
+        public ValidateTransactionHandler(ILogger<ValidateTransactionHandler> logger, ITransactionRepository transactionRepository, IMessageProducer messageProducer)
         {
             _logger = logger;
             _transactionRepository = transactionRepository;
+            _messageProducer = messageProducer;
         }
         public async Task<bool> Handle(ValidateTransactionCommand request, CancellationToken cancellationToken)
         {
             bool isValid = false;
+            string message = string.Empty;
             _logger.LogInformation("ValidateTransactionHandler:Handle - Logic");
             var transaction = await _transactionRepository.GetTransactionsByExternalIdAsync(request.TransactionExternalId);
-
-            if (transaction == null)
-            {
-                _logger.LogWarning("Transaction not found");
-                isValid = false;             
-            }
 
             //Validate value of the transaction
             if (transaction != null)
@@ -38,13 +37,32 @@ namespace Yape.Application.Antifraud.Handlers
                 if (valueIsValid && valueSumTodayIsValid)
                 {
                     _logger.LogInformation("Transaction is valid");
+                    message = "Transaction is valid";
                     isValid = true;
                 }
                 else
                 {
                     _logger.LogWarning("Transaction is invalid");
+                    message = "Transaction is invalid";
                     isValid = false;
                 }
+
+               await _messageProducer.ProduceMessageAsync(new KafkaMessage
+                {
+                    Key = transaction.TransactionExternalId.ToString(),
+                    Value = message
+                }, cancellationToken);
+            } 
+            else
+            {
+                _logger.LogWarning("Transaction not found");
+                message = "Transaction not found";
+                isValid = false;
+                await _messageProducer.ProduceMessageAsync(new KafkaMessage
+                {
+                    Key = request.TransactionExternalId.ToString(),
+                    Value = message
+                }, cancellationToken);
             }
 
             return isValid;

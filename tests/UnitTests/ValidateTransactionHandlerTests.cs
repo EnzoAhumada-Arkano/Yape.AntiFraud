@@ -83,6 +83,38 @@ namespace Yape.UnitTest
                 Times.Once
             );
         }
+
+        [Fact]
+        public async Task Handle_InValidTransaction_ReturnsFalse()
+        {
+            // Arrange
+            var command = new ValidateTransactionCommand { TransactionExternalId = Guid.NewGuid() };
+            var transaction = new Transaction
+            {
+                TransactionExternalId = command.TransactionExternalId,
+                Value = 2001,
+                SourceAccountId = Guid.NewGuid(),
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _transactionRepositoryMock
+                .Setup(repo => repo.GetTransactionsByExternalIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(transaction);
+
+            _transactionRepositoryMock
+                .Setup(repo => repo.GetTransactionsSenderByAccountIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new List<Transaction>());
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.False(result);
+            _messageProducerMock.Verify(
+                producer => producer.ProduceMessageAsync(It.IsAny<QueueMessage>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
+        }
     }
 }
 

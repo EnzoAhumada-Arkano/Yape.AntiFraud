@@ -27,7 +27,7 @@ namespace Yape.Application.Antifraud.Handlers
 
             if (transaction == null)
             {
-                _logger.LogWarning("Transaction not found - {Transaction}", request.TransactionExternalId);
+                _logger.LogWarning("ValidateTransactionHandler:Handle - Transaction not found - {Transaction}", request.TransactionExternalId);
                 await ProduceMessageAsync(request.TransactionExternalId, "Transaction not found", cancellationToken);
                 return false;
             }
@@ -39,7 +39,8 @@ namespace Yape.Application.Antifraud.Handlers
                 ? TrasanctionValidateStatus.TransactionValid
                 : TrasanctionValidateStatus.TransactionInvalid;
 
-            _logger.LogInformation("{Message} - {Transaction}", message, transaction.TransactionExternalId);
+            _logger.LogInformation("ValidateTransactionHandler:Handle - Validated Transaction {Transaction} - {Message}", transaction.TransactionExternalId, message);
+            _logger.LogInformation("ValidateTransactionHandler:Handle - Send message to kafka {Transaction} validated ", transaction.TransactionExternalId);
             await ProduceMessageAsync(transaction.TransactionExternalId, message, cancellationToken);
 
             return valueIsValid && valueSumTodayIsValid;
@@ -58,7 +59,7 @@ namespace Yape.Application.Antifraud.Handlers
         {
             if (transaction.Value > 2000)
             {
-                _logger.LogWarning("Transaction value exceeds limit - {Transaction}", transaction.TransactionExternalId);
+                _logger.LogWarning("ValidateTransactionHandler:ValidateValueTransaction - Transaction value exceeds limit - {Transaction}", transaction.TransactionExternalId);
                 return false;
             }
             return true;
@@ -73,7 +74,7 @@ namespace Yape.Application.Antifraud.Handlers
             var totalValue = transactionsToday.Sum(x => x.Value);
             if (totalValue > 20000)
             {
-                _logger.LogWarning("Total transaction value exceeds limit - Account: {SourceAccount}", transaction.SourceAccountId);
+                _logger.LogWarning("ValidateTransactionHandler:ValidateValueSumTodaySourceAccountAsync - Total transaction value exceeds limit - Account: {SourceAccount}", transaction.SourceAccountId);
                 return false;
             }
             return true;

@@ -42,9 +42,10 @@ namespace Yape.Application.Transaction.Handlers
                 Value = request.Value,
             };
             // Save to database
-            _logger.LogInformation("CreateTransactionHandler:Handle - Save to database");
             await _transactionRepository.AddAsync(transaction);
+            _logger.LogInformation("CreateTransactionHandler:Handle - Created transation {Transaction} into database", transaction.TransactionExternalId);
             // Send message to Kafka
+            _logger.LogInformation("CreateTransactionHandler:Handle - Send message to kafka transaction {Transaction} created ", transaction.TransactionExternalId);
             await ProduceMessageAsync(transaction.TransactionExternalId, "Transaction created", cancellationToken);
 
             return transaction.TransactionExternalId;

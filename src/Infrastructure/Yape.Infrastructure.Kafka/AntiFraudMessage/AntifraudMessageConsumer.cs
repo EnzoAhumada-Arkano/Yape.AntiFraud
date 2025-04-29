@@ -90,7 +90,7 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
                     while (!cancellationToken.IsCancellationRequested)
                     {
                         var cr = _consumer.Consume(cancellationToken);
-                        _logger.LogInformation("Message consume from Kafka Key: '{Key}' - Value: '{Value}' at: '{Topic}'.", cr.Message.Key, cr.Message.Value, cr.Topic );
+                        _logger.LogInformation("Message consume from Kafka Key: '{Key}' - Value: '{Value}' at: '{Topic}'.", cr.Message.Key, cr.Message.Value, cr.Topic);
                         Guid transactionExternalId = Guid.Parse(cr.Message.Key);
                         //Call the antifraud API to validate the transaction
                         await _antifraudApiClient.ValidateTransactionAsync(transactionExternalId);

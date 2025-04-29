@@ -33,6 +33,7 @@ namespace Yape.Application.Transaction.Handlers
             {
                 transaction.Status = request.Status;
                 await _transactionRepository.UpdateAsync(transaction);
+                _logger.LogInformation("PatchTransanctionStatusHandler:Handle - Updated transaction {Transaction} with status {Status}", transaction.TransactionExternalId, transaction.Status);
             }
 
             return transaction.TransactionExternalId;

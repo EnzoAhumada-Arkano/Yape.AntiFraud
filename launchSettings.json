@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "yape.api.antifraud": "StartDebugging",
+        "yape.api.transaction": "StartDebugging",
+        "yape.antifraud.worker": "StartDebugging",
+        "yape.transaction.worker": "StartDebugging"
+      }
+    }
+  }
+}

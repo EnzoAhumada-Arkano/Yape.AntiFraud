@@ -1,0 +1,83 @@
+services:
+  postgres:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.3
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-enterprise-kafka:5.5.3
+    depends_on: [zookeeper]
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9991
+    ports:
+      - 9092:9092
+
+  yape.api.antifraud:
+    image: ${DOCKER_REGISTRY-}yapeapiantifraud
+    build:
+      context: .
+      dockerfile: src/API/Yape.API.AntiFraud/Dockerfile
+    volumes:
+      - ./src/API/Yape.API.Antifraud/appsettings.json:/app/appsettings.json
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+    ports:
+      - 5132:8080
+    depends_on:
+      - postgres
+      - kafka
+
+  yape.api.transaction:
+    image: ${DOCKER_REGISTRY-}yapeapitransaction
+    build:
+      context: .
+      dockerfile: src/API/Yape.API.Transaction/Dockerfile
+    volumes:
+      - ./src/API/Yape.API.Transaction/appsettings.json:/app/appsettings.json
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+    depends_on:
+      - postgres
+      - kafka
+    ports:
+      - 5113:8080 
+
+  yape.antifraud.worker:
+    image: ${DOCKER_REGISTRY-}yapeantifraudworker
+    build:
+      context: .
+      dockerfile: src/Background/Yape.AntiFraud.Worker/Dockerfile
+    volumes:
+      - ./src/Background/Yape.AntiFraud.Worker/appsettings.json:/app/appsettings.json
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+    depends_on:
+      - yape.api.transaction
+      - kafka 
+
+  yape.transaction.worker:
+    image: ${DOCKER_REGISTRY-}yapetransactionworker
+    build:
+      context: .
+      dockerfile: src/Background/Yape.Transaction.Worker/Dockerfile
+    volumes:
+      - ./src/Background/Yape.Transaction.Worker/appsettings.json:/app/appsettings.json
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+    depends_on:
+      - yape.api.antifraud
+      - kafka      
+

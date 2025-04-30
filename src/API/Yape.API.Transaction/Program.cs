@@ -26,6 +26,4 @@ if (app.Environment.IsDevelopment())
 }
 app.MapControllers();
 
-//app.UseHttpsRedirection();
-
 await app.RunAsync();

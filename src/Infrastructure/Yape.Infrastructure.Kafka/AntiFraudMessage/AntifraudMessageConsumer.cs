@@ -93,7 +93,11 @@ namespace Yape.Infrastructure.Kafka.AntiFraudMessage
                         _logger.LogInformation("Message consume from Kafka Key: '{Key}' - Value: '{Value}' at: '{Topic}'.", cr.Message.Key, cr.Message.Value, cr.Topic);
                         Guid transactionExternalId = Guid.Parse(cr.Message.Key);
                         //Call the antifraud API to validate the transaction
-                        await _antifraudApiClient.ValidateTransactionAsync(transactionExternalId);
+                        var result = await _antifraudApiClient.ValidateTransactionAsync(transactionExternalId);
+                        // La variable result Dependiendo de requerimientos de negocio se podria:
+                        // - Reintentar la llamada a la API
+                        // - Enviar un mensaje a otro topic de error
+                        // - Guardar en una base de datos de errores
                     }
                 }
                 catch (OperationCanceledException)

@@ -1,0 +1,317 @@
+{
+	"info": {
+		"_postman_id": "02094ede-b8d0-47e0-88c8-8f275e739d2d",
+		"name": "Yape.API.Transaction",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33692384"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "Transactions",
+					"item": [
+						{
+							"name": "TrasanctionExternalId",
+							"item": [
+								{
+									"name": "{transactionExternalId}",
+									"item": [
+										{
+											"name": "/api/Transactions/GetByExternalId/:transactionExternalId",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/Transactions/TransactionExternalId/:transactionExternalId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"Transactions",
+														"TransactionExternalId",
+														":transactionExternalId"
+													],
+													"variable": [
+														{
+															"key": "transactionExternalId",
+															"value": "<uuid>",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "OK",
+													"originalRequest": {
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/api/Transactions/GetByExternalId/:transactionExternalId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"Transactions",
+																"GetByExternalId",
+																":transactionExternalId"
+															],
+															"variable": [
+																{
+																	"key": "transactionExternalId"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Status",
+							"item": [
+								{
+									"name": "TransactionExternalId",
+									"item": [
+										{
+											"name": "{transactionExternalId}",
+											"item": [
+												{
+													"name": "/api/Transactions/SetStatus/ExternalId/:transactionExternalId",
+													"request": {
+														"method": "PATCH",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/api/Transactions/Status/TrasanctionExternalId/:transactionExternalId?status=<integer>",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"Transactions",
+																"Status",
+																"TrasanctionExternalId",
+																":transactionExternalId"
+															],
+															"query": [
+																{
+																	"key": "status",
+																	"value": "<integer>"
+																}
+															],
+															"variable": [
+																{
+																	"key": "transactionExternalId",
+																	"value": "<uuid>",
+																	"description": "(Required) "
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "OK",
+															"originalRequest": {
+																"method": "PATCH",
+																"header": [],
+																"url": {
+																	"raw": "{{baseUrl}}/api/Transactions/SetStatus/ExternalId/:transactionExternalId?status=<integer>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"Transactions",
+																		"SetStatus",
+																		"ExternalId",
+																		":transactionExternalId"
+																	],
+																	"query": [
+																		{
+																			"key": "status",
+																			"value": "<integer>"
+																		}
+																	],
+																	"variable": [
+																		{
+																			"key": "transactionExternalId"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "text",
+															"header": [],
+															"cookie": [],
+															"body": ""
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "/api/Transactions",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Transactions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Transactions"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/Transactions",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Transactions"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "/api/Transactions",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"sourceAccountId\": \"ea7abc43-9efd-40a8-ac85-07c368032ff4\",\n  \"targetAccountId\": \"beba9260-18ea-4a05-ba5c-8aebf1dd50a9\",\n  \"transferTypeId\": 1,\n  \"value\": 5000\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Transactions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Transactions"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"sourceAccountId\": \"<uuid>\",\n  \"destinationAccountId\": \"<uuid>\",\n  \"transferTypeId\": \"<integer>\",\n  \"value\": \"<integer>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/Transactions",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Transactions"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5113"
+		}
+	]
+}

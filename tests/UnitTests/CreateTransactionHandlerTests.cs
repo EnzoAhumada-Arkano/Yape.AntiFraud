@@ -9,6 +9,7 @@ using Yape.Domain.Repository;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Domain.Models;
 
 namespace Yape.UnitTest
 {
@@ -32,7 +33,7 @@ namespace Yape.UnitTest
         }
 
         [Fact]
-        public async Task Handle_ValidRequest_ReturnsTransactionId()
+        public async Task Handle_ValidRequest_ReturnsTransactionRetrieve()
         {
             // Arrange
             var command = new CreateTransactionCommand
@@ -40,20 +41,36 @@ namespace Yape.UnitTest
                 SourceAccountId = Guid.NewGuid(),
                 TargetAccountId = Guid.NewGuid(),
                 TransferTypeId = 1,
-                Value = 1000
+                Value = 1000,
             };
 
             var transactionId = Guid.NewGuid();
+            var transactionRetrieve = new TransactionRetrieve
+            {
+                TransactionExternalId = transactionId,
+                CreatedAt = DateTime.UtcNow
+            };
+
             _transactionRepositoryMock
                 .Setup(repo => repo.AddAsync(It.IsAny<Transaction>()))
                 .Callback<Transaction>(t => t.TransactionExternalId = transactionId)
                 .Returns(Task.CompletedTask);
 
+            _transactionRepositoryMock
+                .Setup(repo => repo.GetTransactionsByExternalIdAsync(transactionId))
+                .ReturnsAsync(new Transaction
+                {
+                    TransactionExternalId = transactionId,
+                    CreatedAt = transactionRetrieve.CreatedAt
+                });
+
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            Assert.Equal(transactionId, result);
+            Assert.NotNull(result);
+            Assert.Equal(transactionRetrieve.TransactionExternalId, result.TransactionExternalId);            
+
             _messageProducerMock.Verify(
                 producer => producer.ProduceMessageAsync(It.IsAny<QueueMessage>(), It.IsAny<CancellationToken>()),
                 Times.Once
@@ -68,5 +85,4 @@ namespace Yape.UnitTest
         }
     }
 }
-
 

@@ -4,11 +4,12 @@ using Microsoft.Extensions.Logging;
 using Yape.Domain.Message;
 using Yape.Domain.Entities;
 using Yape.Application.Transaction.Commands;
+using Domain.Models;
 
 
 namespace Yape.Application.Transaction.Handlers
 {
-    public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand, Guid>
+    public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand, TransactionRetrieve>
     {
         private readonly ILogger<CreateTransactionHandler> _logger;
         private readonly ITransactionRepository _transactionRepository;
@@ -24,7 +25,7 @@ namespace Yape.Application.Transaction.Handlers
             _messageProducer = messageProducer;
         }
 
-        public async Task<Guid> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
+        public async Task<TransactionRetrieve> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("CreateTransactionHandler:Handle - Logic");
             // Validate the command
@@ -48,7 +49,12 @@ namespace Yape.Application.Transaction.Handlers
             _logger.LogInformation("CreateTransactionHandler:Handle - Send message to kafka transaction {Transaction} created ", transaction.TransactionExternalId);
             await ProduceMessageAsync(transaction.TransactionExternalId, "Transaction created", cancellationToken);
 
-            return transaction.TransactionExternalId;
+            var result = new TransactionRetrieve()
+            {
+                TransactionExternalId = transaction.TransactionExternalId,
+                CreatedAt = transaction.CreatedAt
+            };
+            return result;
         }
 
         private async Task ProduceMessageAsync(Guid transactionId, string message, CancellationToken cancellationToken)

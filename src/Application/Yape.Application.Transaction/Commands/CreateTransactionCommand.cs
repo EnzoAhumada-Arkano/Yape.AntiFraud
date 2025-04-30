@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Yape.Application.Transaction.Commands
 {
-    public class CreateTransactionCommand : TransactionCreate, IRequest<Guid>
+    public class CreateTransactionCommand : TransactionCreate, IRequest<TransactionRetrieve>
     {
 
     }
